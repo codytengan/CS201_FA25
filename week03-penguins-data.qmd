@@ -266,8 +266,13 @@ ggplot(data = penguins_data, aes(x = culmen_depth_mm, color = species)) +
 
 ```{r, message=FALSE}
 ggplot(data = penguins_data, aes(x = culmen_depth_mm, y = body_mass_g, color = species)) +
-  geom_point()
-  theme_bw()
+  geom_point()+
+  theme_bw()+
+  scale_fill_viridis_d(option="mako") +
+  labs(title = "culmen depth",
+       subtitle = "body mass",
+       x = "culmen depth (mm)",
+       y = "body mass")
 ```
 
 -   Part 3
@@ -281,7 +286,15 @@ ggplot(data = penguins_data, aes(x = culmen_depth_mm, y = body_mass_g, color = s
         -   Run `ggplotly(plot_name)` and explore! Edit `plot_name` accordingly
 
 ```{r, message=FALSE}
-
+x=ggplot(data = penguins_data, aes(x = culmen_depth_mm, color = species)) +
+  geom_histogram() +
+  theme_bw() + 
+  scale_fill_viridis_d(option="A") + 
+  labs(title = "Palmer Penguins, Distribution of culmen depth",
+       subtitle = "3 penguin species observed on three islands in the Palmer Archipelago, Antarctica",
+       x = "culmen depth (mm)",
+       y = "Number of Penguins")
+ggplotly(x)
 ```
 
 ## Push to GitHub!
