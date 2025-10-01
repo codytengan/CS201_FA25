@@ -30,24 +30,29 @@ Part 1 is worth a total of 1 point, and Part 2 is worth 4 points (1 point for ea
 ```{r, message=FALSE}
 library(tidyverse)
 
-mydata <- read_csv("data/your_dataset.csv")
+data <- read_csv("data/cjs.csv")
 
 ```
 
 ### Describe your data
 
-Data author:
+Data author:Mathurin Aché
 
-Link:
+Link:<https://www.kaggle.com/datasets/mathurinache/cjs-dataset?resource=download>
 
-Description:
+Description:effects of growth regulators, number and length of internodes formed on trimmed silver maple trees
 
 ### Preview your data
 
 Use some of the strategies you've learned in this class or picked up elsewhere to summarize and quickly explore your data.
 
 ```{r}
+data <- read_csv(here("data/cjs.csv"))
 
+data <- data %>%
+  clean_names()
+
+view(data)
 ```
 
 ### Summary stats
@@ -61,7 +66,13 @@ Before you make plots, you must also:
     -   `mean()`, `median()`, `sd()`, `min()`, `max()` for at least one numeric variable
 
 ```{r}
+data %>%
+count(n)
 
+data%>%
+  group_by(n, tl)%>%
+  summarize(tl=mean(tl, na.rm= TRUE), 
+          internode_1=mean(internode_1, na.rm=TRUE))
 ```
 
 Write 2–3 sentences here: What do the category counts tell you? What does the numeric summary show about spread, center, or outliers?
@@ -81,7 +92,14 @@ Use the EDA Part 3 notes as your reference. Since this is an EDA assignment, you
 ### Plot 1
 
 ```{r}
-# insert code here
+ggplot(data = data, aes(x = internode_1, fill = tree)) +
+  geom_histogram() +
+  theme_bw() + 
+  scale_fill_viridis_d(option="A") + 
+  labs(title = "internode 1 of trees",
+       subtitle = "the length of each the first internode of each tree",
+       x = "internode 1",
+       y = "number of trees")
 
 ```
 
@@ -90,7 +108,8 @@ Interpretation:
 ### Plot 2
 
 ```{r}
-# insert code here
+ggplot(data = data, aes(x = br, y = tl, fill = tree)) +
+  geom_boxplot()
 
 ```
 
@@ -99,7 +118,8 @@ Interpretation:
 ### Plot 3
 
 ```{r}
-# insert code here
+ggplot(data = data, aes(x = internode_2, y = internode_3)) +
+  geom_point()
 
 ```
 
@@ -108,7 +128,8 @@ Interpretation:
 ### Plot 4
 
 ```{r}
-# insert code here
+ggplot(data = data, aes(x = n, y = tr)) +
+  geom_point()
 
 ```
 
