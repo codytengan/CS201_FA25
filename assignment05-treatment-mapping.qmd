@@ -49,26 +49,22 @@ Make an interactive map with `ggiraph` showing the percentage of completed treat
 Hint: Break this question down into bite-sized steps, like we did in Part 2. The `freq1_d` column contains information about use at discharge. Check your denominator carefully — should it be *all cases* or *completed cases*?
 
 ```{r}
-class(teds_d$freq1_)
-summary(teds_d$freq1_d)
 
-teds_d <- teds_d%>%
-  mutate(freq1_d = recode(as.character(freq1_d),
-                          "1" = "no use",
-                          "2"= "some use",
-                          "3"= "frequent use",
-                          .missing="unknown"),
-        freq1_d=factor(freq1_d) 
-        )
-teds_d%>%
-  tabyl(freq1_d)
+teds_d_map <- ggplot(data = teds_d) +
+  geom_sf_interactive(
+    aes(
+      fill = freq1_d,
+      tooltip = paste("State FIPS:", stfips)
+    ),
+    color = "white",
+    size = 0.25
+  ) +
+  labs(fill = "Frequency at discharge") +
+  coord_sf(datum = NA) +
+  theme_minimal()
 
-ggplot(teds_d) +
-  geom_sf(mapping = aes(geometry = geometry, fill = freq1_d),
-          color = "#ffffff", size = 0.25) +
-  labs(fill = "how frequent ") +
-   coord_sf(datum = NA) +
-   theme_minimal() 
+# Render interactive plot
+girafe(ggobj = teds_d_map)
 ```
 
 ## Question 2
@@ -84,7 +80,14 @@ Treatment outcomes can vary depending on the type of service patients receive an
 -   After making your visualizations, write a short summary (3-ish sentences) that explains the main patterns you observe. Please use full, grammatical sentences.
 
 ```{r}
+ggplot(teds_d, aes(x = freq1_d)) +
+  geom_bar()
 
+ggplot(teds_d, aes(x = los)) +
+  geom_bar()
+
+ggplot(teds_d, aes(x = los, y = freq1_d)) + 
+  geom_point()
 ```
 
 Summary: (write here)
